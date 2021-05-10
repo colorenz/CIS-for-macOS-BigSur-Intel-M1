@@ -49,7 +49,7 @@ logFile="/Library/Application Support/SecurityScoring/remediation.log"
 # Append to existing logFile
 echo "$(date -u)" "Beginning remediation" >> "$logFile"
 # Create new logFile
-# echo "$(date -u)" "Beginning remediation" > "$logFile"	
+# echo "$(date -u)" "Beginning remediation" > "$logFile"
 
 if [[ ! -e $plistlocation ]]; then
 	echo "No scoring file present"
@@ -97,7 +97,7 @@ if [ "$Audit1_4" = "1" ]; then
 	echo "$(date -u)" "1.4 remediated" | tee -a "$logFile"
 fi
 
-# 1.5 Enable system data files and security update installs 
+# 1.5 Enable system data files and security update installs
 # Verify organizational score
 Audit1_5="$(defaults read "$plistlocation" OrgScore1_5)"
 # If organizational score is 1 or true, check status of client
@@ -108,7 +108,7 @@ if [ "$Audit1_5" = "1" ]; then
 	echo "$(date -u)" "1.5 remediated" | tee -a "$logFile"
 fi
 
-# 1.6 Enable macOS update installs 
+# 1.6 Enable macOS update installs
 # Verify organizational score
 Audit1_6="$(defaults read "$plistlocation" OrgScore1_6)"
 # If organizational score is 1 or true, check status of client
@@ -141,7 +141,8 @@ Audit2_1_3="$(defaults read "$plistlocation" OrgScore2_1_3)"
 # If organizational score is 1 or true, check status of client
 # If client fails, then remediate
 if [ "$Audit2_1_3" = "1" ]; then
-	open "/System/Library/CoreServices/Menu Extras/Bluetooth.menu"
+	#open "/System/Library/CoreServices/Menu Extras/Bluetooth.menu"
+	sudo -u $currentUser defaults -currentHost write com.apple.controlcenter.plist Bluetooth -int 18
 	echo "$(date -u)" "2.1.3 remediated" | tee -a "$logFile"
 fi
 
@@ -168,7 +169,7 @@ if [ "$Audit2_2_2" = "1" ]; then
 	echo "$(date -u)" "2.2.2 enforced" | tee -a "$logFile"
 fi
 
-# 2.3.1 Set an inactivity interval of 20 minutes or less for the screen saver 
+# 2.3.1 Set an inactivity interval of 20 minutes or less for the screen saver
 # Verify organizational score
 Audit2_3_1="$(defaults read "$plistlocation" OrgScore2_3_1)"
 # If organizational score is 1 or true, check status of client
@@ -178,7 +179,7 @@ if [ "$Audit2_3_1" = "1" ]; then
 	echo "$(date -u)" "2.3.1 remediated" | tee -a "$logFile"
 fi
 
-# 2.3.2 Secure screen saver corners 
+# 2.3.2 Secure screen saver corners
 # Verify organizational score
 Audit2_3_2="$(defaults read "$plistlocation" OrgScore2_3_2)"
 # If organizational score is 1 or true, check status of client
@@ -222,7 +223,7 @@ if [ "$Audit2_3_2" = "1" ]; then
 	fi
 fi
 
-# 2.3.3 Familiarize users with screen lock tools or corner to Start Screen Saver  
+# 2.3.3 Familiarize users with screen lock tools or corner to Start Screen Saver
 # Verify organizational score
 Audit2_3_3="$(defaults read "$plistlocation" OrgScore2_3_3)"
 # If organizational score is 1 or true, check status of client
@@ -241,8 +242,8 @@ if [ "$Audit2_3_3" = "1" ]; then
 	fi
 fi
 
-# 2.4.1 Disable Remote Apple Events 
-# Requires Full Disk Access privileges	
+# 2.4.1 Disable Remote Apple Events
+# Requires Full Disk Access privileges
 # Verify organizational score
 Audit2_4_1="$(defaults read "$plistlocation" OrgScore2_4_1)"
 # If organizational score is 1 or true, check status of client
@@ -252,7 +253,7 @@ if [ "$Audit2_4_1" = "1" ]; then
 		echo "$(date -u)" "2.4.1 remediated" | tee -a "$logFile"
 fi
 
-# 2.4.2 Disable Internet Sharing 
+# 2.4.2 Disable Internet Sharing
 # Verify organizational score
 Audit2_4_2="$(defaults read "$plistlocation" OrgScore2_4_2)"
 # If organizational score is 1 or true, check status of client
@@ -264,7 +265,7 @@ if [ "$Audit2_4_2" = "1" ]; then
 	/usr/libexec/PlistBuddy -c "Add :NAT:Enabled bool false" /Library/Preferences/SystemConfiguration/com.apple.nat.plist
 	/usr/libexec/PlistBuddy -c "Delete :NAT:PrimaryInterface:Enabled"  /Library/Preferences/SystemConfiguration/com.apple.nat.plist
 	/usr/libexec/PlistBuddy -c "Add :NAT:PrimaryInterface:Enabled bool false" /Library/Preferences/SystemConfiguration/com.apple.nat.plist
-	
+
 	## breaks internet connection sharing
 	cat > /Library/LaunchDaemons/sysctl.plist << EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -291,11 +292,11 @@ EOF
 		/bin/launchctl unload /Library/LaunchDaemons/sysctl.plist
 	fi
 	/bin/launchctl load /Library/LaunchDaemons/sysctl.plist
-    
+
 	echo "$(date -u)" "2.4.2 enforced" | tee -a "$logFile"
 fi
 
-# 2.4.3 Disable Screen Sharing 
+# 2.4.3 Disable Screen Sharing
 # Verify organizational score
 Audit2_4_3="$(defaults read "$plistlocation" OrgScore2_4_3)"
 # If organizational score is 1 or true, check status of client
@@ -306,7 +307,7 @@ if [ "$Audit2_4_3" = "1" ]; then
 	echo "$(date -u)" "2.4.3 remediated" | tee -a "$logFile"
 fi
 
-# 2.4.4 Disable Printer Sharing 
+# 2.4.4 Disable Printer Sharing
 # Verify organizational score
 Audit2_4_4="$(defaults read "$plistlocation" OrgScore2_4_4)"
 # If organizational score is 1 or true, check status of client
@@ -319,7 +320,7 @@ if [ "$Audit2_4_4" = "1" ]; then
 	echo "$(date -u)" "2.4.4 remediated" | tee -a "$logFile"
 fi
 
-# 2.4.5 Disable Remote Login 
+# 2.4.5 Disable Remote Login
 # Requires full disk access
 # Verify organizational score
 Audit2_4_5="$(defaults read "$plistlocation" OrgScore2_4_5)"
@@ -330,7 +331,7 @@ if [ "$Audit2_4_5" = "1" ]; then
 	echo "$(date -u)" "2.4.5 remediated" | tee -a "$logFile"
 fi
 
-# 2.4.6 Disable DVD or CD Sharing 
+# 2.4.6 Disable DVD or CD Sharing
 # Verify organizational score
 Audit2_4_6="$(defaults read "$plistlocation" OrgScore2_4_6)"
 # If organizational score is 1 or true, check status of client
@@ -397,7 +398,7 @@ if [ "$Audit2_4_11" = "1" ]; then
 	echo "$(date -u)" "2.4.11 remediated - requires restart" | tee -a "$logFile"
 fi
 
-# 2.5.2 Enable Gatekeeper 
+# 2.5.2 Enable Gatekeeper
 # Verify organizational score
 Audit2_5_2="$(defaults read "$plistlocation" OrgScore2_5_2)"
 # If organizational score is 1 or true, check status of client
@@ -407,7 +408,7 @@ if [ "$Audit2_5_2" = "1" ]; then
 	echo "$(date -u)" "2.5.2 remediated" | tee -a "$logFile"
 fi
 
-# 2.5.3 Enable Firewall 
+# 2.5.3 Enable Firewall
 # Remediation sets Firewall on for essential services
 # Verify organizational score
 Audit2_5_3="$(defaults read "$plistlocation" OrgScore2_5_3)"
@@ -418,7 +419,7 @@ if [ "$Audit2_5_3" = "1" ]; then
 	echo "$(date -u)" "2.5.3 remediated" | tee -a "$logFile"
 fi
 
-# 2.5.4 Enable Firewall Stealth Mode 
+# 2.5.4 Enable Firewall Stealth Mode
 # Verify organizational score
 Audit2_5_4="$(defaults read "$plistlocation" OrgScore2_5_4)"
 # If organizational score is 1 or true, check status of client
@@ -446,7 +447,7 @@ Audit2_5_8="$(defaults read "$plistlocation" OrgScore2_5_8)"
 # If client fails, then remediate
 if [ "$Audit2_5_8" = "1" ]; then
 	AppleDiagn=$(defaults read /Library/Application\ Support/CrashReporter/DiagnosticMessagesHistory.plist AutoSubmit)
-	if [ $AppleDiagn == 1 ]; then 
+	if [ $AppleDiagn == 1 ]; then
 		defaults write /Library/Application\ Support/CrashReporter/DiagnosticMessagesHistory.plist AutoSubmit -int 0
 		echo "$(date -u)" "2.5.8 remediated" | tee -a "$logFile"
 	fi
@@ -458,8 +459,9 @@ Audit2_5_9="$(defaults read "$plistlocation" OrgScore2_5_9)"
 # If organizational score is 1 or true, check status of client
 # If client fails, then remediate
 if [ "$Audit2_5_9" = "1" ]; then
-	defaults write /Users/"${currentUser}"/Library/Preferences/com.apple.AdLib.plist forceLimitAdTracking -bool true
-	chown "${currentUser}":staff /Users/"${currentUser}"/Library/Preferences/com.apple.AdLib.plist
+	#defaults write /Users/"${currentUser}"/Library/Preferences/com.apple.AdLib.plist forceLimitAdTracking -bool true
+	#chown "${currentUser}":staff /Users/"${currentUser}"/Library/Preferences/com.apple.AdLib.plist
+	sudo -u $currentUser defaults -currentHost write /Users/$currentUser/Library/Preferences/com.apple.Adlib.plist forceLimitAdTracking -bool false
 	echo "$(date -u)" "2.5.9 consider using a configuration profile" | tee -a "$logFile"
 	echo "$(date -u)" "2.5.9 remediated" | tee -a "$logFile"
 fi
@@ -484,7 +486,7 @@ if [ "$Audit2_8" = "1" ]; then
 	echo "$(date -u)" "2.8 remediated" | tee -a "$logFile"
 fi
 
-# 2.9 Enable Secure Keyboard Entry in terminal.app 
+# 2.9 Enable Secure Keyboard Entry in terminal.app
 # Verify organizational score
 Audit2_9="$(defaults read "$plistlocation" OrgScore2_9)"
 # If organizational score is 1 or true, check status of client
@@ -539,7 +541,7 @@ if [ "$Audit3_3" = "1" ]; then
 	sed "s/${oldExpireAfter}/expire-after:60d OR 1G/g" /etc/security/audit_control_old > /etc/security/audit_control
 	chmod 644 /etc/security/audit_control
 	chown root:wheel /etc/security/audit_control
-	echo "$(date -u)" "3.3 remediated" | tee -a "$logfile"	
+	echo "$(date -u)" "3.3 remediated" | tee -a "$logfile"
 fi
 
 # 3.4 Control access to audit records
@@ -552,10 +554,10 @@ if [ "$Audit3_4" = "1" ]; then
 	chmod -R 440 /var/audit
 	chown root:wheel /etc/security/audit_control
 	chmod 400 /etc/security/audit_control
-	"$(date -u)" "3.3 remediated" | tee -a "$logfile"	
+	echo "$(date -u)" "3.3 remediated" | tee -a "$logfile"
 fi
 
-# 3.5 Retain install.log for 365 or more days 
+# 3.5 Retain install.log for 365 or more days
 # Verify organizational score
 Audit3_5="$(defaults read "$plistlocation" OrgScore3_5)"
 # If organizational score is 1 or true, check status of client
@@ -567,14 +569,14 @@ if [ "$Audit3_5" = "1" ]; then
 		sed '$s/$/ ttl=365/' /etc/asl/com.apple.install.old > /etc/asl/com.apple.install
 		chmod 644 /etc/asl/com.apple.install
 		chown root:wheel /etc/asl/com.apple.install
-		echo "$(date -u)" "3.5 remediated" | tee -a "$logfile"	
+		echo "$(date -u)" "3.5 remediated" | tee -a "$logfile"
 	else
 	if [[ "$installRetention" -lt "365" ]]; then
 		mv /etc/asl/com.apple.install /etc/asl/com.apple.install.old
 		sed "s/"ttl=$installRetention"/"ttl=365"/g" /etc/asl/com.apple.install.old > /etc/asl/com.apple.install
 		chmod 644 /etc/asl/com.apple.install
 		chown root:wheel /etc/asl/com.apple.install
-		echo "$(date -u)" "3.5 remediated" | tee -a "$logfile"	
+		echo "$(date -u)" "3.5 remediated" | tee -a "$logfile"
 	fi
 	fi
 fi
@@ -589,7 +591,7 @@ if [ "$Audit3_6" = "1" ]; then
 	echo "$(date -u)" "3.6 remediated" | tee -a "$logFile"
 fi
 
-# 4.1 Disable Bonjour advertising service 
+# 4.1 Disable Bonjour advertising service
 # Verify organizational score
 Audit4_1="$(defaults read "$plistlocation" OrgScore4_1)"
 # If organizational score is 1 or true, check status of client
@@ -599,17 +601,17 @@ if [ "$Audit4_1" = "1" ]; then
 	echo "$(date -u)" "4.1 remediated" | tee -a "$logFile"
 fi
 
-# 4.2 Enable "Show Wi-Fi status in menu bar" 
+# 4.2 Enable "Show Wi-Fi status in menu bar"
 # Verify organizational score
 Audit4_2="$(defaults read "$plistlocation" OrgScore4_2)"
 # If organizational score is 1 or true, check status of client
 # If client fails, then remediate
 if [ "$Audit4_2" = "1" ]; then
-	open "/System/Library/CoreServices/Menu Extras/AirPort.menu"
+	sudo -u $currentUser defaults -currentHost write com.apple.controlcenter.plist WiFi -int 18
 	echo "$(date -u)" "4.2 remediated" | tee -a "$logFile"
 fi
 
-# 4.4 Ensure http server is not running 
+# 4.4 Ensure http server is not running
 # Verify organizational score
 Audit4_4="$(defaults read "$plistlocation" OrgScore4_4)"
 # If organizational score is 1 or true, check status of client
@@ -769,10 +771,12 @@ Audit5_10="$(defaults read "$plistlocation" OrgScore5_10)"
 # If organizational score is 1 or true, check status of client
 # If client fails, then remediate
 if [ "$Audit5_10" = "1" ]; then
-	pmset -a standbydelayhigh 600
-	pmset -a standbydelaylow 600
+	pmset -a standbydelayhigh 900
+	pmset -a standbydelaylow 900
 	pmset -a highstandbythreshold 90
 	pmset -a destroyfvkeyonstandby 1
+	pmset -a hibernatemode 25
+	pmset -a displaysleep 10
 	echo "$(date -u)" "5.10 remediated" | tee -a "$logFile"
 fi
 
@@ -816,7 +820,7 @@ Audit5_14="$(defaults read "$plistlocation" OrgScore5_14)"
 if [ "$Audit5_14" = "1" ]; then
 	PolicyBannerText="CIS mandated Login Window banner"
 	/bin/echo "$PolicyBannerText" > "/Library/Security/PolicyBanner.txt"
-	/bin/chmod 755 "/Library/Security/PolicyBanner."* 
+	/bin/chmod 755 "/Library/Security/PolicyBanner."*
 	echo "$(date -u)" "5.14 remediated" | tee -a "$logFile"
 fi
 
@@ -922,6 +926,3 @@ fi
 echo "$(date -u)" "Remediation complete" | tee -a "$logFile"
 echo "continue"
 exit 0
-
-
-

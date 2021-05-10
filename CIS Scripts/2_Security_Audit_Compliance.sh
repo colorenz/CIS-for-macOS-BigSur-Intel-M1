@@ -60,7 +60,7 @@ if [[ $(tail -n 1 "$logFile") = *"Remediation complete" ]]; then
  	echo "$(date -u)" "Beginning Audit" >> "$logFile"
 else
  	echo "Create new logFile"
- 	echo "$(date -u)" "Beginning Audit" > "$logFile"	
+ 	echo "$(date -u)" "Beginning Audit" > "$logFile"
 fi
 
 if [[ ! -e $plistlocation ]]; then
@@ -130,7 +130,7 @@ if [ "$Audit1_3" = "1" ]; then
 	fi
 fi
 
-# 1.4 Enable app updates 
+# 1.4 Enable app updates
 # Configuration Profile - Software Update - Automatically install App Store app updates
 # Verify organizational score
 Audit1_4="$($Defaults read "$plistlocation" OrgScore1_4)"
@@ -153,7 +153,7 @@ if [ "$Audit1_4" = "1" ]; then
 fi
 
 
-# 1.5 Enable system data files and security update installs 
+# 1.5 Enable system data files and security update installs
 # Configuration Profile - Software Updates - Install security updates automatically and Install xProtect, MRT & Gatekeeper updates automatically (Jamf Pro - Automatically install configuration data and Automatcially install system data files and security updates)
 # Verify organizational score
 Audit1_5="$($Defaults read "$plistlocation" OrgScore1_5)"
@@ -174,7 +174,7 @@ if [ "$Audit1_5" = "1" ]; then
 	fi
 fi
 
-# 1.6 Enable OS X update installs 
+# 1.6 Enable OS X update installs
 # Configuration Profile - Software Updates - Automatically install macOS updates
 # Verify organizational score
 Audit1_6="$($Defaults read "$plistlocation" OrgScore1_6)"
@@ -201,7 +201,7 @@ if [ "$Audit2_1_1" = "1" ]; then
 		echo "$(date -u)" "2.1.1 passed" | tee -a "$logFile"
 		$Defaults write "$plistlocation" OrgScore2_1_1 -bool false; else
 		connectable="$(system_profiler SPBluetoothDataType | grep Connectable | awk '{print $2}' | head -1)"
-		if [[ "$connectable" != "Yes" ]]; then
+		if [[ "$connectable" = *"Yes" ]]; then
 			echo "$(date -u)" "2.1.1 passed" | tee -a "$logFile"
 			$Defaults write "$plistlocation" OrgScore2_1_1 -bool false; else
 			echo "* 2.1.1 Turn off Bluetooth, if no paired devices exist" >> "$auditfilelocation"
@@ -215,9 +215,10 @@ fi
 Audit2_1_3="$($Defaults read "$plistlocation" OrgScore2_1_3)"
 # If organizational score is 1 or true, check status of client
 if [ "$Audit2_1_3" = "1" ]; then
-	btMenuBar="$($Defaults read /Users/"$currentUser"/Library/Preferences/com.apple.systemuiserver menuExtras | grep -c Bluetooth.menu)"
+	#btMenuBar="$($Defaults read /Users/"$currentUser"/Library/Preferences/com.apple.systemuiserver menuExtras | grep -c Bluetooth.menu)"
+	btMenuBar="$(sudo -u $currentUser defaults -currentHost read com.apple.controlcenter.plist Bluetooth )"
 	# If client fails, then note category in audit file
-	if [ "$btMenuBar" = "0" ]; then
+	if [ "$btMenuBar" != "18" ]; then
 		echo "* 2.1.3 Show Bluetooth status in menu bar" >> "$auditfilelocation"
 		echo "$(date -u)" "2.1.3 fix" | tee -a "$logFile"; else
 		echo "$(date -u)" "2.1.3 passed" | tee -a "$logFile"
@@ -246,10 +247,10 @@ fi
 Audit2_2_2="$($Defaults read "$plistlocation" OrgScore2_2_2)"
 # If organizational score is 1 or true, check status of client
 # if [ "$Audit2_2_2" = "1" ]; then
-# sync time 
+# sync time
 # fi
 
-# 2.3.1 Set an inactivity interval of 20 minutes or less for the screen saver 
+# 2.3.1 Set an inactivity interval of 20 minutes or less for the screen saver
 # Configuration Profile - LoginWindow payload > Options > Start screen saver after: 20 Minutes of Inactivity
 # Verify organizational score
 Audit2_3_1="$($Defaults read "$plistlocation" OrgScore2_3_1)"
@@ -270,7 +271,7 @@ if [ "$Audit2_3_1" = "1" ]; then
 	fi
 fi
 
-# 2.3.2 Secure screen saver corners 
+# 2.3.2 Secure screen saver corners
 # Configuration Profile - Custom payload > com.apple.dock > wvous-tl-corner=0, wvous-br-corner=5, wvous-bl-corner=0, wvous-tr-corner=0
 # Verify organizational score
 Audit2_3_2="$($Defaults read "$plistlocation" OrgScore2_3_2)"
@@ -294,7 +295,7 @@ if [ "$Audit2_3_2" = "1" ]; then
 	fi
 fi
 
-# 2.3.3 Familiarize users with screen lock tools or corner to Start Screen Saver 
+# 2.3.3 Familiarize users with screen lock tools or corner to Start Screen Saver
 # Configuration Profile - Custom payload > com.apple.dock > wvous-tl-corner=0, wvous-br-corner=5, wvous-bl-corner=0, wvous-tr-corner=0
 # Verify organizational score
 Audit2_3_3="$($Defaults read "$plistlocation" OrgScore2_3_3)"
@@ -319,7 +320,7 @@ if [ "$Audit2_3_3" = "1" ]; then
 fi
 
 
-# 2.4.1 Disable Remote Apple Events 
+# 2.4.1 Disable Remote Apple Events
 # Verify organizational score
 Audit2_4_1="$($Defaults read "$plistlocation" OrgScore2_4_1)"
 # If organizational score is 1 or true, check status of client
@@ -334,7 +335,7 @@ if [ "$Audit2_4_1" = "1" ]; then
 	fi
 fi
 
-# 2.4.2 Disable Internet Sharing 
+# 2.4.2 Disable Internet Sharing
 # Verify organizational score
 Audit2_4_2="$($Defaults read "$plistlocation" OrgScore2_4_2)"
 # If organizational score is 1 or true, check status of client
@@ -358,7 +359,7 @@ if [ "$Audit2_4_2" = "1" ]; then
 	fi
 fi
 
-# 2.4.3 Disable Screen Sharing 
+# 2.4.3 Disable Screen Sharing
 # Verify organizational score
 Audit2_4_3="$($Defaults read "$plistlocation" OrgScore2_4_3)"
 # If organizational score is 1 or true, check status of client
@@ -373,7 +374,7 @@ if [ "$Audit2_4_3" = "1" ]; then
 	fi
 fi
 
-# 2.4.4 Disable Printer Sharing 
+# 2.4.4 Disable Printer Sharing
 # Verify organizational score
 Audit2_4_4="$($Defaults read "$plistlocation" OrgScore2_4_4)"
 # If organizational score is 1 or true, check status of client
@@ -388,7 +389,7 @@ if [ "$Audit2_4_4" = "1" ]; then
 	fi
 fi
 
-# 2.4.5 Disable Remote Login 
+# 2.4.5 Disable Remote Login
 # Verify organizational score
 Audit2_4_5="$($Defaults read "$plistlocation" OrgScore2_4_5)"
 # If organizational score is 1 or true, check status of client
@@ -403,7 +404,7 @@ if [ "$Audit2_4_5" = "1" ]; then
 	fi
 fi
 
-# 2.4.6 Disable DVD or CD Sharing 
+# 2.4.6 Disable DVD or CD Sharing
 # Verify organizational score
 Audit2_4_6="$($Defaults read "$plistlocation" OrgScore2_4_6)"
 # If organizational score is 1 or true, check status of client
@@ -499,7 +500,7 @@ if [ "$Audit2_4_11" = "1" ]; then
 fi
 
 
-# 2.5.1.1 Enable FileVault 
+# 2.5.1.1 Enable FileVault
 # Verify organizational score
 # Audit only.  Does not remediate
 Audit2_5_1_1="$($Defaults read "$plistlocation" OrgScore2_5_1_1)"
@@ -511,7 +512,7 @@ if [ "$Audit2_5_1_1" = "1" ]; then
 		echo "* 2.5.1.1 Enable FileVault" >> "$auditfilelocation"
 		echo "$(date -u)" "2.5.1.1 fix" | tee -a "$logFile"; else
 		echo "$(date -u)" "2.5.1.1 passed" | tee -a "$logFile"
-		$Defaults write "$plistlocation" OrgScore2_5_1_1 -bool false	
+		$Defaults write "$plistlocation" OrgScore2_5_1_1 -bool false
 	fi
 fi
 
@@ -528,20 +529,22 @@ if [ "$Audit2_5_1_2" = "1" ]; then
 					# Get the APFS Container ID for the boot drive's APFS volume.
 					CONTAINER_ID=$(echo "$DUINFO" | awk '/Part of Whole/ {print $4;exit}')
 					APFSINFO=$(diskutil ap list "$CONTAINER_ID")
-					APVOLINFO=$(echo "$APFSINFO" | grep -A7 "$LV_UUID")
-					ENCRYPTION=$(echo "$APVOLINFO" | awk '/FileVault/ {print $3;exit}')
-					if [ "$ENCRYPTION" != "Yes" ]; then
-						echo "* 2.5.1.2 Ensure all user storage APFS Volumes are encrypted" >> "$auditfilelocation"
-						echo "$(date -u)" "2.5.1.2 fix" | tee -a "$logFile"; else 
+					APVOLINFO=$(echo "$APFSINFO" | grep -B4 -A7 "$LV_UUID")
+					#ENCRYPTION=$(echo "$APVOLINFO" | awk '/FileVault/ {print $3;exit}')
+					ENCRYPTION=$(echo "$APVOLINFO" | awk '/FileVault/ {print $2;exit}')
+					if [ "$ENCRYPTION" = "FileVault:" ] || [ "$ENCRYPTION" = "Yes" ]; then
 						echo "$(date -u)" "2.5.1.2 passed" | tee -a "$logFile"
-						$Defaults write "$plistlocation" OrgScore2_5_1_2 -bool false	
+						$Defaults write "$plistlocation" OrgScore2_5_1_2 -bool false; else
+						echo "* 2.5.1.2 Ensure all user storage APFS Volumes are encrypted" >> "$auditfilelocation"
+						echo "$(date -u)" "2.5.1.2 fix" | tee -a "$logFile"
+
 						fi
-					else 
+					else
 					echo "$(date -u)" "2.5.1.2 not applicable, CoreStorage storage enabled" | tee -a "$logFile"
 					fi
 				fi
 
-	
+
 
 # 2.5.1.3 Ensure all user storage CoreStorage Volumes are encrypted
 # Verify organizational score
@@ -557,17 +560,17 @@ if [ "$Audit2_5_1_3" = "1" ]; then
 		EncryptStatus="$( diskutil cs "$LFV" | awk '/Conversion Status/ {print $3}')"
 		if [ "$EncryptStatus" != "Complete" ]; then
 		echo "* 2.5.1.3 Ensure all user CoreStorage volumes encrypted" >> "$auditfilelocation"
-		echo "$(date -u)" "2.5.1.3 fix" | tee -a "$logfile"; else 
+		echo "$(date -u)" "2.5.1.3 fix" | tee -a "$logfile"; else
 		echo "$(date -u)" "2.5.1.3 passed" | tee -a "$logFile"
-		$Defaults write "$plistlocation" OrgScore2_5_1_3 -bool false	
+		$Defaults write "$plistlocation" OrgScore2_5_1_3 -bool false
 		fi
-	else 
+	else
 	echo "$(date -u)" "2.5.1.3 not applicable, APFS storage enabled" | tee -a "$logFile"
 	fi
 fi
-	
 
-# 2.5.2 Enable Gatekeeper 
+
+# 2.5.2 Enable Gatekeeper
 # Configuration Profile - Security and Privacy payload > General > Gatekeeper > Mac App Store and identified developers (selected)
 # Verify organizational score
 Audit2_5_2="$($Defaults read "$plistlocation" OrgScore2_5_2)"
@@ -588,7 +591,7 @@ if [ "$Audit2_5_2" = "1" ]; then
 	fi
 fi
 
-# 2.5.3 Enable Firewall 
+# 2.5.3 Enable Firewall
 # Configuration Profile - Security and Privacy payload > Firewall > Enable Firewall (checked)
 # Verify organizational score
 Audit2_5_3="$($Defaults read "$plistlocation" OrgScore2_5_3)"
@@ -609,7 +612,7 @@ if [ "$Audit2_5_3" = "1" ]; then
 	fi
 fi
 
-# 2.5.4 Enable Firewall Stealth Mode 
+# 2.5.4 Enable Firewall Stealth Mode
 # Configuration Profile - Security and Privacy payload > Firewall > Enable stealth mode (checked)
 # Verify organizational score
 Audit2_5_4="$($Defaults read "$plistlocation" OrgScore2_5_4)"
@@ -657,7 +660,7 @@ CP_disableDiagnostic="$(/usr/sbin/system_profiler SPConfigurationProfileDataType
 		echo "$(date -u)" "2.5.8 passed cp" | tee -a "$logFile"
 		$Defaults write "$plistlocation" OrgScore2_5_8 -bool false; else
 	AppleDiagn=$($Defaults read /Library/Application\ Support/CrashReporter/DiagnosticMessagesHistory.plist AutoSubmit)
-	if [ "$AppleDiagn" == 1 ]; then 
+	if [ "$AppleDiagn" == 1 ]; then
 		/bin/echo "* 2.5.8 Disable sending diagnostic and usage data to Apple" >> "$auditfilelocation"
 		echo "$(date -u)" "2.5.8 fix Disable sending diagnostic and usage data to Apple" | tee -a "$logFile"; else
 		echo "$(date -u)" "2.5.8 passed" | tee -a "$logFile"
@@ -671,7 +674,8 @@ fi
 Audit2_5_9="$($Defaults read "$plistlocation" OrgScore2_5_9)"
 # If organizational score is 1 or true, check status of client
 if [ "$Audit2_5_9" = "1" ]; then
-	if [ "$($Defaults read /Users/"$currentUser"/Library/Preferences/com.apple.AdLib.plist forceLimitAdTracking)" = "1" ]; then
+	forcelimitadtracking="$(sudo -u $currentUser defaults -currentHost read /Users/$currentUser/Library/Preferences/com.apple.AdLib.plist forceLimitAdTracking)"
+	if [ "$forcelimitadtracking" = '0' ]; then
 		echo "$(date -u)" "2.5.9 passed" | tee -a "$logFile"
 		$Defaults write "$plistlocation" OrgScore2_5_9 -bool false
 	else
@@ -699,7 +703,7 @@ if [ "$Audit2_6_1" = "1" ]; then
 	done
 fi
 
-# 2.6.2 Disable iCloud keychain (Not Scored) - 
+# 2.6.2 Disable iCloud keychain (Not Scored) -
 # Configuration Profile - Restrictions payload > Functionality > Allow iCloud Keychain (unchecked)
 # Verify organizational score
 Audit2_6_2="$($Defaults read "$plistlocation" OrgScore2_6_2)"
@@ -793,7 +797,7 @@ if [ "$Audit2_8" = "1" ]; then
 	fi
 fi
 
-# 2.10 Enable Secure Keyboard Entry in terminal.app 
+# 2.10 Enable Secure Keyboard Entry in terminal.app
 # Configuration Profile - Custom payload > com.apple.Terminal > SecureKeyboardEntry=true
 # Verify organizational score
 Audit2_9="$($Defaults read "$plistlocation" OrgScore2_9)"
@@ -820,11 +824,15 @@ fi
 Audit2_11="$($Defaults read "$plistlocation" OrgScore2_11)"
 # If organizational score is 1 or true, check status of client
 if [ "$Audit2_11" = "1" ]; then
-# Check for T2 chip.  
-if system_profiler SPiBridgeDataType | grep 'Model Name:' | grep -q 'T2'; then 
+# Check for T2 chip.
+if system_profiler SPiBridgeDataType | grep 'Model Name:' | grep -q 'T2'; then
 	echo "* 2.11 Check EFI Firmware Integrity is not supported by this Mac. T2 Chip found." >> "$auditfilelocation"
 	$Defaults write "$plistlocation" OrgScore2_11 -bool false
 	echo "$(date -u)" "2.11 passed" | tee -a "$logFile"
+else if system_profiler SPiBridgeDataType | grep 'System Integrity Protection' | grep -q 'Enabled'; then
+		echo "M1 Chip In Use and Integrity Enabled" >> "$auditfilelocation"
+		$Defaults write "$plistlocation" OrgScore2_11 -bool false
+		echo "$(date -u)" "2.11 passed" | tee -a "$logFile"
 	else
 		efiStatus="$(/usr/libexec/firmwarecheckers/eficheck/eficheck --integrity-check | grep -c "No changes detected")"
 		if [ "$efiStatus" -gt 0 ]; then
@@ -836,6 +844,7 @@ if system_profiler SPiBridgeDataType | grep 'Model Name:' | grep -q 'T2'; then
 				fi
 fi
 fi
+fi
 
 
 # 2.12 Disable "Wake for network access" and "Power Nap"
@@ -845,15 +854,19 @@ Audit2_12="$($Defaults read "$plistlocation" OrgScore2_12)"
 if [ "$Audit2_12" = "1" ]; then
 	CP_wompEnabled="$(/usr/sbin/system_profiler SPConfigurationProfileDataType | /usr/bin/grep -c '"Wake On LAN" = 0')"
 		# If client fails, then note category in audit file
-		if [[ "$CP_wompEnabled" = "3" ]] ; then
+		if [[ "$CP_wompEnabled" = "3" ]]; then
 			echo "$(date -u)" "2.12 passed" | tee -a "$logFile"
 			$Defaults write "$plistlocation" OrgScore2_12 -bool false; else
 			wompEnabled="$(pmset -g | grep womp | awk '{print $2}')"
 			if [ "$wompEnabled" = "0" ]; then
 				echo "$(date -u)" "2.12 passed" | tee -a "$logFile"
 				$Defaults write "$plistlocation" OrgScore2_12 -bool false; else
-				echo "* 2.12 Disable Wake for network access" >> "$auditfilelocation"
-				echo "$(date -u)" "2.12 fix" | tee -a "$logFile"
+				if [ "$wompEnabled" = "" ]; then
+					echo "$(date -u)" "2.12 provisionally passed - reasses while on PSU" | tee -a "$logFile"
+					$Defaults write "$plistlocation" OrgScore2_12 -bool false; else
+						echo "* 2.12 Disable Wake for network access" >> "$auditfilelocation"
+						echo "$(date -u)" "2.12 fix" | tee -a "$logFile"
+				fi
 			fi
 		fi
 fi
@@ -902,7 +915,7 @@ if [ "$Audit3_3" = "1" ]; then
 		echo "$(date -u)" "3.3 fix" | tee -a "$logFile"
 		fi
 	fi
-		
+
 
 # 3.4 Control access to audit records
 # Audit only.  Remediation requires system inspection.
@@ -920,8 +933,8 @@ if [ "$Audit3_4" = "1" ]; then
 		echo "$(date -u)" "3.4 fix" | tee -a "$logFile"
 	fi
 fi
-	
-# 3.5 Retain install.log for 365 or more days 
+
+# 3.5 Retain install.log for 365 or more days
 # Verify organizational score
 Audit3_5="$($Defaults read "$plistlocation" OrgScore3_5)"
 # If organizational score is 1 or true, check status of client
@@ -950,13 +963,13 @@ if [ "$Audit3_6" = "1" ]; then
 	fi
 fi
 
-# 4.1 Disable Bonjour advertising service 
+# 4.1 Disable Bonjour advertising service
 # Configuration Profile - Custom payload > com.apple.mDNSResponder > NoMulticastAdvertisements=true
 # Verify organizational score
 Audit4_1="$($Defaults read "$plistlocation" OrgScore4_1)"
 # If organizational score is 1 or true, check status of client
 if [ "$Audit4_1" = "1" ]; then
-	CP_bonjourAdvertise="$(/usr/sbin/system_profiler SPConfigurationProfileDataType | /usr/bin/grep -c 'NoMulticastAdvertisements = 1')"
+	CP_bonjourAdvertise="$(sudo defaults read /Library/Preferences/com.apple.mDNSResponder.plist NoMulticastAdvertisements)"
 	# If client fails, then note category in audit file
 	if [[ "$CP_bonjourAdvertise" -gt "0" ]];then
 		echo "$(date -u)" "4.1 passed cp" | tee -a "$logFile"
@@ -973,14 +986,14 @@ if [ "$Audit4_1" = "1" ]; then
 	fi
 fi
 
-# 4.2 Enable "Show Wi-Fi status in menu bar" 
+# 4.2 Enable "Show Wi-Fi status in menu bar"
 # Verify organizational score
 Audit4_2="$($Defaults read "$plistlocation" OrgScore4_2)"
 # If organizational score is 1 or true, check status of client
 if [ "$Audit4_2" = "1" ]; then
-	wifiMenuBar="$($Defaults read /Users/"$currentUser"/Library/Preferences/com.apple.systemuiserver menuExtras | grep -c AirPort.menu)"
+	wifiMenuBar="$(sudo -u $currentUser defaults -currentHost read com.apple.controlcenter.plist WiFi )"
 	# If client fails, then note category in audit file
-	if [ "$wifiMenuBar" = "0" ]; then
+	if [ "$wifiMenuBar" != "18" ]; then
 		echo "* 4.2 Enable Show Wi-Fi status in menu bar" >> "$auditfilelocation"
 		echo "$(date -u)" "4.2 fix" | tee -a "$logFile"; else
 		echo "$(date -u)" "4.2 passed" | tee -a "$logFile"
@@ -988,7 +1001,7 @@ if [ "$Audit4_2" = "1" ]; then
 	fi
 fi
 
-# 4.4 Ensure http server is not running 
+# 4.4 Ensure http server is not running
 # Verify organizational score
 Audit4_4="$($Defaults read "$plistlocation" OrgScore4_4)"
 # If organizational score is 1 or true, check status of client
@@ -1204,19 +1217,44 @@ fi
 Audit5_10="$($Defaults read "$plistlocation" OrgScore5_10)"
 # If client fails, then note category in audit file
 if [ "$Audit5_10" = "1" ]; then
-	macType=$(system_profiler SPHardwareDataType | egrep -c "Model Identifier: MacBook")
-	if [[ "$macType" -ge 0 ]]; then
+	macType=$(system_profiler SPHardwareDataType | egrep -e MacBook)
+	if [ "$macType" != "" ]; then
+
 		hibernateValue=$(pmset -g | egrep standbydelaylow | awk '{print $2}')
-		if [[ "$hibernateValue" == "" ]] || [[ "$hibernateValue" -gt 600 ]]; then
+		if [[ "$hibernateValue" != "" ]] || [[ "$hibernateValue" -ge 900 ]]; then
+			echo "* 5.10 Hibernate value is greater than 15 minutes." >> "$auditfilelocation"
+			echo "$(date -u)" "5.10 fix" | tee -a "$logFile"
+		else
 			echo "$(date -u)" "5.10 passed" | tee -a "$logFile"
 			$Defaults write "$plistlocation" OrgScore5_10 -bool false
-		else
-			echo "* 5.10 Ensure system is set to hibernate" >> "$auditfilelocation"
-			echo "$(date -u)" "5.10 fix" | tee -a "$logFile"
 		fi
-	else
-		echo "$(date -u)" "5.10 passed" | tee -a "$logFile"
-		$Defaults write "$plistlocation" OrgScore5_10 -bool false
+
+		hibernateValuehigh=$(pmset -g | egrep standbydelaylow | awk '{print $2}')
+		if [[ "$hibernateValuehigh" != "" ]] || [[ "$hibernateValuehigh" -ge 900 ]]; then
+			echo "* 5.10 Hibernate value is greater than 15 minutes." >> "$auditfilelocation"
+			echo "$(date -u)" "5.10 fix" | tee -a "$logFile"
+		else
+			echo "$(date -u)" "5.10 passed" | tee -a "$logFile"
+			$Defaults write "$plistlocation" OrgScore5_10 -bool false
+		fi
+
+		destroyFV=$(pmset -g | grep DestroyFVKeyOnStandby | awk '{print $2}')
+		if [[ "$destroyFV" == "0" ]]; then
+			echo "* 5.10 Need to activate destory Filevault on Standby" >> "$auditfilelocation"
+			echo "$(date -u)" "5.10 fix" | tee -a "$logFile"
+		else
+			echo "$(date -u)" "5.10 passed" | tee -a "$logFile"
+			$Defaults write "$plistlocation" OrgScore5_10 -bool false
+		fi
+
+		hibernateModeSetting=$(pmset -g | grep hibernatemode | awk '{print $2}')
+		if [[ "$hibernateModeSetting" != "25" ]] || [[ "$hibernateModeSetting" != "" ]]; then
+			echo "* 5.10 Need to activate power save hibernation" >> "$auditfilelocation"
+			echo "$(date -u)" "5.10 fix" | tee -a "$logFile"
+		else
+			echo "$(date -u)" "5.10 passed" | tee -a "$logFile"
+			$Defaults write "$plistlocation" OrgScore5_10 -bool false
+		fi
 	fi
 fi
 
