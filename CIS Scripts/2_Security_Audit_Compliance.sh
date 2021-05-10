@@ -1095,7 +1095,7 @@ Audit5_3="$($Defaults read "$plistlocation" OrgScore5_3)"
 # If organizational score is 1 or true, check status of client
 if [ "$Audit5_3" = "1" ]; then
 	sudoTimeout="$(cat /etc/sudoers | grep timestamp)"
-	if [ "$sudoTimeout" = "" ] || [ "$sudoTimeout" != "Defaults timestamp_timeout=0" ]; then
+	if [ "$sudoTimeout" = "" ]; then
 		echo "* 5.3 Reduce the sudo timeout period"
 		echo "$(date -u)" "5.3 fix" ; else
 		echo "$(date -u)" "5.3 passed"
