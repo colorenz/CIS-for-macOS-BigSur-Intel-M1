@@ -35,6 +35,7 @@
 # Updated for 10.13 CIS benchmarks by Erin McDonald, Jamf Jan 2019
 # Updated for 10.15 CIS benchmarks by Erin McDonald, Jamf, March 2020
 # updated for 10.15 CIS benchmarks by Erin McDonald, Jamf 2020
+# Updated for 10.11 CIS benchmarks by David Kavanagh, May 2021
 
 # USAGE
 # Admins set organizational compliance for each listed item, which gets written to plist.
@@ -57,94 +58,94 @@ plistlocation="$dir/org_security_score.plist"
 
 # 1.1 Verify all Apple provided software is current
 # Best managed via Jamf
-OrgScore1_1="true"
-# OrgScore1_1="false"
+# OrgScore1_1="true"
+OrgScore1_1="false"
 
-# 1.2 Enable Auto Update 
+# 1.2 Enable Auto Update
 # Configuration Profile - Custom payload > com.apple.SoftwareUpdate.plist > AutomaticCheckEnabled=true, AutomaticDownload=true
-OrgScore1_2="true"
-# OrgScore1_2="false"
+# OrgScore1_2="true"
+OrgScore1_2="false"
 
-# 1.3 Enable Download new updates when available  
+# 1.3 Enable Download new updates when available
 # Configuration Profile - Custom payload > com.apple.SoftwareUpdate.plist > com.apple.SoftwareUpdate AutomaticDownload=true
-OrgScore1_3="true"
-# OrgScore1_3="false"
+# OrgScore1_3="true"
+OrgScore1_3="false"
 
 # 1.4 Enable app update installs
 # Does not work as a Configuration Profile - Custom payload > com.apple.commerce
-OrgScore1_4="true"
-# OrgScore1_4="false"
+# OrgScore1_4="true"
+OrgScore1_4="false"
 
-# 1.5 Enable system data files and security update installs 
+# 1.5 Enable system data files and security update installs
 # Configuration Profile - Custom payload > com.apple.SoftwareUpdate.plist > ConfigDataInstall=true, CriticalUpdateInstall=true
-OrgScore1_5="true"
-# OrgScore1_5="false"
+# OrgScore1_5="true"
+OrgScore1_5="false"
 
-# 1.6 Enable macOS update installs 
+# 1.6 Enable macOS update installs
 # Enter profile descrip here
-OrgScore1_6="true"
-# OrgScore1_6="false"
+# OrgScore1_6="true"
+OrgScore1_6="false"
 
-# 2.1.1 Turn off Bluetooth, if no paired devices exist 
+# 2.1.1 Turn off Bluetooth, if no paired devices exist
 OrgScore2_1_1="true"
 # OrgScore2_1_1="false"
 
 ## 2.1.2 Turn off Bluetooth "Discoverable" mode when not pairing devices - not applicable to 10.9 and higher.
-## Starting with OS X (10.9) Bluetooth is only set to Discoverable when the Bluetooth System Preference is selected. 
+## Starting with OS X (10.9) Bluetooth is only set to Discoverable when the Bluetooth System Preference is selected.
 ## To ensure that the computer is not Discoverable do not leave that preference open.
 
-# 2.1.3 Show Bluetooth status in menu bar 
+# 2.1.3 Show Bluetooth status in menu bar
 OrgScore2_1_3="true"
 # OrgScore2_1_3="false"
 
-# 2.2.1 Enable "Set time and date automatically" 
+# 2.2.1 Enable "Set time and date automatically"
 OrgScore2_2_1="true"
 # OrgScore2_2_1="false"
 
-# 2.2.2 Ensure time set is within appropriate limits 
+# 2.2.2 Ensure time set is within appropriate limits
 # Not audited - only enforced if identified as priority
 OrgScore2_2_2="true"
 # OrgScore2_2_2="false"
 
-# 2.3.1 Set an inactivity interval of 20 minutes or less for the screen saver 
+# 2.3.1 Set an inactivity interval of 20 minutes or less for the screen saver
 # Configuration Profile - LoginWindow payload > Options > Start screen saver after: 20 Minutes of Inactivity
 OrgScore2_3_1="true"
 # OrgScore2_3_1="false"
 
-# 2.3.2 Secure screen saver corners 
+# 2.3.2 Secure screen saver corners
 # Configuration Profile - Custom payload > com.apple.dock > wvous-tl-corner=0, wvous-br-corner=5, wvous-bl-corner=0, wvous-tr-corner=0
-OrgScore2_3_2="true"
-# OrgScore2_3_2="false"
+# OrgScore2_3_2="true"
+OrgScore2_3_2="false"
 
-# 2.3.3 Set a screen corner to Start Screen Saver 
+# 2.3.3 Set a screen corner to Start Screen Saver
 # Configuration Profile - Custom payload > com.apple.dock > wvous-tl-corner=0, wvous-br-corner=5, wvous-bl-corner=0, wvous-tr-corner=0
 OrgScore2_3_3="true"
 # OrgScore2_3_3="false"
 
 ## 2.3.3 Familiarize users with screen lock tools or corner to Start Screen Saver (not scored)
-## The rationale in the CIS Benchmark for this is incorrect. The computer will lock if the 
+## The rationale in the CIS Benchmark for this is incorrect. The computer will lock if the
 ## display sleeps before the Screen Saver activates
 # Configuration Profile - Custom payload > com.apple.dock > wvous-tl-corner=0, wvous-br-corner=5, wvous-bl-corner=0, wvous-tr-corner=0
 OrgScore2_3_3="true"
 # OrgScore2_3_3="false"
 
-# 2.4.1 Disable Remote Apple Events 
+# 2.4.1 Disable Remote Apple Events
 OrgScore2_4_1="true"
 # OrgScore2_4_1="false"
 
-# 2.4.2 Disable Internet Sharing 
+# 2.4.2 Disable Internet Sharing
 OrgScore2_4_2="true"
 # OrgScore2_4_2="false"
 
-# 2.4.3 Disable Screen Sharing 
-OrgScore2_4_3="true"
-# OrgScore2_4_3="false"
+# 2.4.3 Disable Screen Sharing
+# OrgScore2_4_3="true"
+OrgScore2_4_3="false"
 
 # 2.4.4 Disable Printer Sharing
 OrgScore2_4_4="true"
 # OrgScore2_4_4="false"
 
-# 2.4.5 Disable Remote Login 
+# 2.4.5 Disable Remote Login
 # SSH
 OrgScore2_4_5="true"
 # OrgScore2_4_5="false"
@@ -153,11 +154,11 @@ OrgScore2_4_5="true"
 OrgScore2_4_6="true"
 # OrgScore2_4_6="false"
 
-# 2.4.7 Disable Bluetooth Sharing 
+# 2.4.7 Disable Bluetooth Sharing
 OrgScore2_4_7="true"
 # OrgScore2_4_7="false"
 
-# 2.4.8 Disable File Sharing 
+# 2.4.8 Disable File Sharing
 OrgScore2_4_8="true"
 # OrgScore2_4_8="false"
 
@@ -168,13 +169,13 @@ OrgScore2_4_9="true"
 
 # 2.4.10 Disable Content Caching
 # P2P Software updates
-OrgScore2_4_10="true"
-# OrgScore2_4_10="false"
+# OrgScore2_4_10="true"
+OrgScore2_4_10="false"
 
 # 2.4.11 Disable Media Sharing
 # P2P Media Sharing
-OrgScore2_4_11="true"
-# OrgScore2_4_11="false"
+# OrgScore2_4_11="true"
+OrgScore2_4_11="false"
 
 # 2.5.1.1 Enable FileVault
 OrgScore2_5_1_1="true"
@@ -190,20 +191,20 @@ OrgScore2_5_1_3="true"
 
 # 2.5.2 Enable Gatekeeper
 # Configuration Profile - Security and Privacy payload > General > Gatekeeper > Mac App Store and identified developers (selected)
-OrgScore2_5_2="true"
-# OrgScore2_5_2="false"
+# OrgScore2_5_2="true"
+OrgScore2_5_2="false"
 
-# 2.5.3 Enable Firewall 
+# 2.5.3 Enable Firewall
 # Configuration Profile - Security and Privacy payload > Firewall > Enable Firewall (checked)
 OrgScore2_5_3="true"
 # OrgScore2_5_3="false"
 
-# 2.5.4 Enable Firewall Stealth Mode 
+# 2.5.4 Enable Firewall Stealth Mode
 # Configuration Profile - Security and Privacy payload > Firewall > Enable stealth mode (checked)
 OrgScore2_5_4="true"
 # OrgScore2_5_4="false"
 
-# 2.5.5 Review Application Firewall Rules 
+# 2.5.5 Review Application Firewall Rules
 # Configuration Profile - Security and Privacy payload > Firewall > Control incoming connections for specific apps (selected)
 OrgScore2_5_5="true"
 # OrgScore2_5_5="false"
@@ -217,38 +218,38 @@ OrgScore2_5_5="true"
 ## It is considered user opt in.
 
 # 2.5.8 Disable sending diagnostic and usage data to Apple
-OrgScore2_5_8="true"
-# OrgScore2_5_8="false"
+# OrgScore2_5_8="true"
+OrgScore2_5_8="false"
 
 # 2.5.9 Review Advertising Settings (Not Scored)
 OrgScore2_5_9="true"
 # OrgScore2_5_9="false"
 
 # 2.6.1 iCloud configuration (Check for iCloud accounts) (Not Scored)
-OrgScore2_6_1="true"
-# OrgScore2_6_1="false"
+# OrgScore2_6_1="true"
+OrgScore2_6_1="false"
 
 # 2.6.2 iCloud keychain (Not Scored)
 # Configuration Profile - Restrictions payload > Functionality > Allow iCloud Keychain (unchecked)
-OrgScore2_6_2="true"
-# OrgScore2_6_2="false"
+# OrgScore2_6_2="true"
+OrgScore2_6_2="false"
 
 # 2.6.3 iCloud Drive (Not Scored)
 # Configuration Profile - Restrictions payload > Functionality > Allow iCloud Drive (unchecked)
-OrgScore2_6_3="true"
-# OrgScore2_6_3="false"
+# OrgScore2_6_3="true"
+OrgScore2_6_3="false"
 
 # 2.6.4 iCloud Drive Document sync
 # Configuration Profile - Restrictions payload - > Functionality > Allow iCloud Desktop & Documents (unchecked)
-OrgScore2_6_4="true"
-# OrgScore2_6_4="false"
+# OrgScore2_6_4="true"
+OrgScore2_6_4="false"
 
 # 2.6.5 iCloud Drive Desktop sync
 # Configuration Profile - Restrictions payload - > Functionality > Allow iCloud Desktop & Documents (unchecked)
-OrgScore2_6_5="true"
-# OrgScore2_6_5="false"
+# OrgScore2_6_5="true"
+OrgScore2_6_5="false"
 
-# 2.7.1 Time Machine Auto-Backup 
+# 2.7.1 Time Machine Auto-Backup
 # Time Machine is typically not used as an Enterprise backup solution
 # OrgScore2_7_1="true"
 OrgScore2_7_1="false"
@@ -261,7 +262,7 @@ OrgScore2_7_1="false"
 OrgScore2_8="true"
 # OrgScore2_8="false"
 
-# 2.9 Enable Secure Keyboard Entry in terminal.app 
+# 2.9 Enable Secure Keyboard Entry in terminal.app
 # Configuration Profile - Custom payload > com.apple.Terminal > SecureKeyboardEntry=true
 OrgScore2_9="true"
 # OrgScore2_9="false"
@@ -288,14 +289,14 @@ OrgScore3_2="true"
 # OrgScore3_2="false"
 
 # 3.3 Ensure security auditing retention
-OrgScore3_3="true"
-# OrgScore3_3="false"
+# OrgScore3_3="true"
+OrgScore3_3="false"
 
 # 3.4 Control access to audit records
 OrgScore3_4="true"
 # OrgScore3_4="false"
 
-# 3.5 Retain install.log for 365 or more days 
+# 3.5 Retain install.log for 365 or more days
 OrgScore3_5="true"
 # OrgScore3_5="false"
 
@@ -303,16 +304,16 @@ OrgScore3_5="true"
 OrgScore3_6="true"
 # OrgScore3_6="false"
 
-# 4.1 Disable Bonjour advertising service 
+# 4.1 Disable Bonjour advertising service
 # Configuration Profile - Custom payload > com.apple.mDNSResponder > NoMulticastAdvertisements=true
 OrgScore4_1="true"
 # OrgScore4_1="false"
 
-# 4.2 Enable "Show Wi-Fi status in menu bar" 
+# 4.2 Enable "Show Wi-Fi status in menu bar"
 OrgScore4_2="true"
 # OrgScore4_2="false"
 
-# 4.4 Ensure http server is not running 
+# 4.4 Ensure http server is not running
 OrgScore4_4="true"
 # OrgScore4_4="false"
 
@@ -368,7 +369,7 @@ OrgScore5_6="false"
 OrgScore5_7="true"
 # OrgScore5_7="false"
 
-# 5.8 Disable automatic login 
+# 5.8 Disable automatic login
 # Configuration Profile - LoginWindow payload > Options > Disable automatic login (checked)
 OrgScore5_8="true"
 # OrgScore5_8="false"
@@ -387,18 +388,18 @@ OrgScore5_11="true"
 # OrgScore5_11="false"
 
 # 5.12 Disable ability to login to another user's active and locked session
-OrgScore5_12="true"
-# OrgScore5_12="false"
+# OrgScore5_12="true"
+OrgScore5_12="false"
 
 # 5.13 Create a custom message for the Login Screen
 # Configuration Profile - LoginWindow payload > Window > Banner (message)
-OrgScore5_13="true"
-# OrgScore5_13="false"
+#OrgScore5_13="true"
+ OrgScore5_13="false"
 
 # 5.14 Create a Login window banner
 # Policy Banner https://support.apple.com/en-us/HT202277
-OrgScore5_14="true"
-# OrgScore5_14="false"
+#OrgScore5_14="true"
+ OrgScore5_14="false"
 
 ## 5.15 Do not enter a password-related hint (Not Scored)
 ## Not needed if 6.1.2 Disable "Show password hints" is enforced.
@@ -416,22 +417,22 @@ OrgScore5_16="true"
 OrgScore5_19="true"
 # OrgScore5_19="false"
 
-# 6.1.1 Display login window as name and password 
+# 6.1.1 Display login window as name and password
 # Configuration Profile - LoginWindow payload > Window > LOGIN PROMPT > Name and password text fields (selected)
-OrgScore6_1_1="true"
-# OrgScore6_1_1="false"
+# OrgScore6_1_1="true"
+OrgScore6_1_1="false"
 
-# 6.1.2 Disable "Show password hints" 
+# 6.1.2 Disable "Show password hints"
 # Configuration Profile - LoginWindow payload > Options > Show password hint when needed and available (unchecked - Yes this is backwards)
 OrgScore6_1_2="true"
 # OrgScore6_1_2="false"
 
-# 6.1.3 Disable guest account 
+# 6.1.3 Disable guest account
 # Configuration Profile - LoginWindow payload > Options > Allow Guest User (unchecked)
 OrgScore6_1_3="true"
 # OrgScore6_1_3="false"
 
-# 6.1.4 Disable "Allow guests to connect to shared folders" 
+# 6.1.4 Disable "Allow guests to connect to shared folders"
 # Configuration Profile - 6.1.4 Disable Allow guests to connect to shared folders - Custom payload > com.apple.AppleFileServer guestAccess=false, com.apple.smb.server AllowGuestAccess=false
 OrgScore6_1_4="true"
 # OrgScore6_1_4="false"
@@ -447,8 +448,8 @@ OrgScore6_2="true"
 
 # 6.3 Disable the automatic run of safe files in Safari
 # Configuration Profile - Custom payload > com.apple.Safari > AutoOpenSafeDownloads=false
-OrgScore6_3="true"
-# OrgScore6_3="false"
+# OrgScore6_3="true"
+OrgScore6_3="false"
 
 ## 6.4 Use parental controls for systems that are not centrally managed (Not Scored)
 
@@ -462,7 +463,7 @@ cat << EOF > "$plistlocation"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>		
+<dict>
 		<key>OrgScore1_1</key>
 		<${OrgScore1_1}/>
 		<key>OrgScore1_2</key>

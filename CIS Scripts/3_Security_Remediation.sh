@@ -34,6 +34,7 @@
 # github.com/jamfprofessionalservices
 # updated for 10.13 CIS benchmarks by Erin McDonald, Jamf Jan 2019
 # updated for 10.15 CIS benchmarks by Erin McDonald, Jamf 2020
+# Updated for 10.11 CIS benchmarks by David Kavanagh, May 2021
 
 # USAGE
 # Reads from plist at /Library/Application Support/SecurityScoring/org_security_score.plist by default.
