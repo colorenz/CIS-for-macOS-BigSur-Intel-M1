@@ -1,6 +1,8 @@
 # CIS for macOS Big Sur - Script and Configuration Profile Remediation
 ## INFO:
 
+##UPDATED TO SUCCESSFULLY REMEDIATE CIS FOR BIG SUR (BOTH INTEL AND M1 CONFIGS) - Please notify of any issues :)
+
 Refers to document CIS_Apple_OSX_11.0_Benchmark_v1.1.0.pdf, available at https://benchmarks.cisecurity.org
 
 ## USAGE:
