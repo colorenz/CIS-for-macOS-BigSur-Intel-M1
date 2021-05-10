@@ -1,7 +1,9 @@
-# CIS for macOS Catalina - Script and Configuration Profile Remediation
+# CIS for macOS Big Sur - Script and Configuration Profile Remediation
 ## INFO:
 
-Refers to document CIS_Apple_OSX_10.15_Benchmark_v1.0.0.pdf, available at https://benchmarks.cisecurity.org
+##UPDATED TO SUCCESSFULLY REMEDIATE CIS FOR BIG SUR (BOTH INTEL AND M1 CONFIGS) - Please notify of any issues :)
+
+Refers to document CIS_Apple_OSX_11.0_Benchmark_v1.1.0.pdf, available at https://benchmarks.cisecurity.org
 
 ## USAGE:
 * Create Extension Attributes using the following scripts:
